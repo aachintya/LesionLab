@@ -73,21 +73,6 @@ install the local app requirements only for local use.
 For LaTeX, upload `report/LaTeX_Source.zip` to Overleaf and select `main.tex`, or
 extract it and run `latexmk -pdf main.tex`.
 
-## Push to your empty GitHub repository
-
-Authenticate as **aachintya** with `gh auth login` and `gh auth setup-git`. From
-this folder, run once:
-
-```sh
-git init -b main
-git config user.name "aachintya"
-git config user.email "146585070+aachintya@users.noreply.github.com"
-git add .
-git commit -m "Add LesionLab code, notebooks and research report"
-git remote add origin https://github.com/aachintya/LesionLab.git
-git push -u origin main
-```
-
 ## References and data
 
 The JI-ADF comparison adapts [Nguyen et al., arXiv:2604.27343](https://arxiv.org/abs/2604.27343).
