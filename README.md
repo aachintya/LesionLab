@@ -70,9 +70,6 @@ inputs where specified. This source export is not a model or
 dataset backup. Kaggle notebooks retain the preinstalled CUDA PyTorch builds;
 install the local app requirements only for local use.
 
-For LaTeX, upload `report/LaTeX_Source.zip` to Overleaf and select `main.tex`, or
-extract it and run `latexmk -pdf main.tex`.
-
 ## References and data
 
 The JI-ADF comparison adapts [Nguyen et al., arXiv:2604.27343](https://arxiv.org/abs/2604.27343).
