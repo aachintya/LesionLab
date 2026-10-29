@@ -1,0 +1,12 @@
+{
+  "fit_split": "fusion",
+  "evaluation_split": "holdout",
+  "tta": false,
+  "fit_lesions": 524,
+  "evaluation_lesions": 524,
+  "csv_sha256": "e17f7509214549422b737b9140bb3ab35d1fb1fd0cb7a890b8778b7518579a9e",
+  "upload_gate_enabled": false,
+  "accuracy": 0.6354961832061069,
+  "balanced_accuracy": 0.46686985883279636,
+  "macro_f1": 0.4025739987866927
+}

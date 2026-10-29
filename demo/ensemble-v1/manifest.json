@@ -1,0 +1,46 @@
+{
+  "format_version": 1,
+  "id": "geometric_feature_lr_tta_images",
+  "class_order": [
+    "AKIEC",
+    "BCC",
+    "BEN_OTH",
+    "BKL",
+    "DF",
+    "INF",
+    "MAL_OTH",
+    "MEL",
+    "NV",
+    "SCCKA",
+    "VASC"
+  ],
+  "tta_views": [
+    "identity",
+    "horizontal_flip",
+    "vertical_flip",
+    "rotate90",
+    "rotate180",
+    "rotate270"
+  ],
+  "artifacts": {
+    "feature_classifier.joblib": "998981ff2df0ab4966bc62663c84b08e2397620c0b98eebac6557247e57b99d3",
+    "representations.joblib": "baaedd7b16d836fe97e85511fd8ea684729ad29803396c599681e0b3a92490ca"
+  },
+  "encoder_sha256": {
+    "best_clinical.pt": "d1e705181f067c85a234f4c706cb5e1da7eff8de987bd84f659c2f42d0b3af86",
+    "best_dermoscopic.pt": "86f077e5653d6eb04e8938595a50a38c9d75859200fbc9d976aa7cb574a3885f",
+    "best_metadata.pt": "1e9aca717c8f00217bda27dff2b46ec576547dcce18c8520f8f95c335d372cd2",
+    "metadata_encoder.json": "e7d1b33b0beff42df3f284b231cf535c08aa8251b1423cd57e6267eafea4d19e"
+  },
+  "preprocessing_sha256": {
+    "src/components/augmentations.py": "807038009acad4be6aa7024e3fb94be9079178b272861fe1380f7ca2fe984e77",
+    "src/components/image_cache.py": "44b34a5c62fc3c1071fa939ed3c84cc54ace91ec0f4eab897c59cafdb47da1dd",
+    "src/components/preprocessing.py": "25467deefcf8bce31907f76616b9f87dd6a61f25ba8dea24beac9558b4bf4b1e"
+  },
+  "source_selection_sha256": "07d34af83795af920139ecd5f086f24dff1ad7fcfea459bc88f4d6fe2bc40040",
+  "source_results_sha256": "dd8ad065a95436fe9114f2f9c99d14ee146a8ee1061962c311df0dc56648b36b",
+  "study": "frozen-ensemble-study-v4",
+  "calibrated": false,
+  "validation_lesions": 786,
+  "validation_is_exploratory": true
+}

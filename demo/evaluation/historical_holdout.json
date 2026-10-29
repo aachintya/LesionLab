@@ -1,0 +1,62 @@
+{
+  "split": "historical_holdout",
+  "lesions": 524,
+  "positive_lesions": 376,
+  "negative_lesions": 148,
+  "rule": "group_existing_11class_argmax",
+  "positive_classes": [
+    "AKIEC",
+    "BCC",
+    "MAL_OTH",
+    "MEL",
+    "SCCKA"
+  ],
+  "no_training_or_threshold_fitting": true,
+  "models": {
+    "JI-ADF adaptation": {
+      "accuracy": 0.7786259541984732,
+      "balanced_accuracy": 0.6531771132834963,
+      "sensitivity": 0.9414893617021277,
+      "specificity": 0.36486486486486486,
+      "macro_f1": 0.6706830790568654,
+      "confusion": {
+        "true_negative": 54,
+        "false_positive": 94,
+        "false_negative": 22,
+        "true_positive": 354
+      }
+    },
+    "Concatenation control": {
+      "accuracy": 0.8187022900763359,
+      "balanced_accuracy": 0.7200258769407706,
+      "sensitivity": 0.9468085106382979,
+      "specificity": 0.49324324324324326,
+      "macro_f1": 0.7440445890985001,
+      "confusion": {
+        "true_negative": 73,
+        "false_positive": 75,
+        "false_negative": 20,
+        "true_positive": 356
+      }
+    },
+    "Original late fusion": {
+      "accuracy": 0.8225190839694656,
+      "balanced_accuracy": 0.7349769982748706,
+      "sensitivity": 0.9361702127659575,
+      "specificity": 0.5337837837837838,
+      "macro_f1": 0.7563972466470379,
+      "confusion": {
+        "true_negative": 79,
+        "false_positive": 69,
+        "false_negative": 24,
+        "true_positive": 352
+      }
+    }
+  },
+  "source_sha256": {
+    "reports/milk10k_late_fusion/evidence/predictions/ji_adf.holdout.csv": "494293caff7eed12d22bb048c26c3c1c3344466d354eddabb9e1709db314095a",
+    "reports/milk10k_late_fusion/evidence/predictions/concat_fixed.holdout.csv": "5be8246da61f38e98f7139582981770e64369a8db1c9f9cf4185b0cd1ce7afa5",
+    "reports/milk10k_late_fusion/evidence/baseline_holdout_predictions.csv": "61d7dda6745b7fbdc76229ec6ab53fbeb7db7a89c1a9f415d9bc8aef1f5806fd"
+  },
+  "scope": "Our JI-ADF adaptation, not the published paper's reported performance. The new ensemble's validation result uses a separate cohort."
+}

@@ -1,0 +1,277 @@
+{
+  "protocol": {
+    "evaluation_split": "val",
+    "no_training_or_threshold_fitting": true,
+    "threshold": 0.5,
+    "primary_decision": "sum positive-group scores >= 0.5",
+    "secondary_decision": "map the existing 11-class argmax to its diagnostic group",
+    "source_sha256": "2c9ab48d5c7f640b2039257e823bb17a78436b118c4cbc678c219b4f518156d2",
+    "class_order": [
+      "AKIEC",
+      "BCC",
+      "BEN_OTH",
+      "BKL",
+      "DF",
+      "INF",
+      "MAL_OTH",
+      "MEL",
+      "NV",
+      "SCCKA",
+      "VASC"
+    ],
+    "groups": {
+      "risk_screening_all": {
+        "positive": [
+          "AKIEC",
+          "BCC",
+          "MAL_OTH",
+          "MEL",
+          "SCCKA"
+        ],
+        "excluded": []
+      },
+      "unambiguous_subset": {
+        "positive": [
+          "BCC",
+          "MAL_OTH",
+          "MEL"
+        ],
+        "excluded": [
+          "AKIEC",
+          "SCCKA"
+        ]
+      }
+    },
+    "interpretation": "The all-class positive group includes precancerous/uncertain families; it is not pure confirmed malignancy.",
+    "limitations": [
+      "Previously inspected validation data; not an independent test.",
+      "Scores are uncalibrated; 0.5 was fixed without threshold fitting.",
+      "Wilson intervals describe sampling uncertainty conditional on these fixed predictions."
+    ]
+  },
+  "evaluations": {
+    "risk_screening_all": {
+      "lesions": 786,
+      "positive_lesions": 562,
+      "negative_lesions": 224,
+      "majority_class_accuracy": 0.7150127226463104,
+      "models": {
+        "saved_original": {
+          "accuracy": 0.40966921119592875,
+          "balanced_accuracy": 0.5603393492628368,
+          "sensitivity": 0.2099644128113879,
+          "specificity": 0.9107142857142857,
+          "positive_precision": 0.855072463768116,
+          "negative_predictive_value": 0.3148148148148148,
+          "positive_f1": 0.33714285714285713,
+          "macro_f1": 0.40251638269986895,
+          "roc_auc": 0.7597070411794611,
+          "average_precision": 0.8514390785081134,
+          "confusion": {
+            "true_negative": 204,
+            "false_positive": 20,
+            "false_negative": 444,
+            "true_positive": 118
+          },
+          "accuracy_wilson95": [
+            0.3758098046096251,
+            0.4444072802063339
+          ],
+          "sensitivity_wilson95": [
+            0.1783176645582196,
+            0.24554922444733832
+          ],
+          "specificity_wilson95": [
+            0.8661209853097533,
+            0.9414581135618163
+          ],
+          "mapped_11class_argmax": {
+            "accuracy": 0.8040712468193384,
+            "balanced_accuracy": 0.7180033045246569,
+            "sensitivity": 0.9181494661921709,
+            "specificity": 0.5178571428571429,
+            "positive_precision": 0.8269230769230769,
+            "negative_predictive_value": 0.7160493827160493,
+            "positive_f1": 0.8701517706576728,
+            "macro_f1": 0.7355940200438623,
+            "roc_auc": 0.7597070411794611,
+            "average_precision": 0.8514390785081134,
+            "confusion": {
+              "true_negative": 116,
+              "false_positive": 108,
+              "false_negative": 46,
+              "true_positive": 516
+            },
+            "accuracy_wilson95": [
+              0.7748723587655355,
+              0.8303123838962359
+            ],
+            "sensitivity_wilson95": [
+              0.8925454885172741,
+              0.9380758678244063
+            ],
+            "specificity_wilson95": [
+              0.45267331801393645,
+              0.5824388167196102
+            ]
+          }
+        },
+        "improved_ensemble": {
+          "accuracy": 0.8371501272264631,
+          "balanced_accuracy": 0.7894636502287748,
+          "sensitivity": 0.900355871886121,
+          "specificity": 0.6785714285714286,
+          "positive_precision": 0.8754325259515571,
+          "negative_predictive_value": 0.7307692307692307,
+          "positive_f1": 0.887719298245614,
+          "macro_f1": 0.7957115009746589,
+          "roc_auc": 0.8612576258261313,
+          "average_precision": 0.9178246025826299,
+          "confusion": {
+            "true_negative": 152,
+            "false_positive": 72,
+            "false_negative": 56,
+            "true_positive": 506
+          },
+          "accuracy_wilson95": [
+            0.8097084330270488,
+            0.8613123067443715
+          ],
+          "sensitivity_wilson95": [
+            0.8728093185191617,
+            0.9224664481909579
+          ],
+          "specificity_wilson95": [
+            0.6148442285640117,
+            0.7362771187714534
+          ],
+          "mapped_11class_argmax": {
+            "accuracy": 0.8269720101781171,
+            "balanced_accuracy": 0.7796612862226742,
+            "sensitivity": 0.8896797153024911,
+            "specificity": 0.6696428571428571,
+            "positive_precision": 0.8710801393728222,
+            "negative_predictive_value": 0.7075471698113207,
+            "positive_f1": 0.8802816901408451,
+            "macro_f1": 0.784177542318129,
+            "roc_auc": 0.8612576258261313,
+            "average_precision": 0.9178246025826299,
+            "confusion": {
+              "true_negative": 150,
+              "false_positive": 74,
+              "false_negative": 62,
+              "true_positive": 500
+            },
+            "accuracy_wilson95": [
+              0.7989534462737639,
+              0.8518100636177645
+            ],
+            "sensitivity_wilson95": [
+              0.8610855952330464,
+              0.9129828176981366
+            ],
+            "specificity_wilson95": [
+              0.605643272171541,
+              0.7279220077971507
+            ]
+          }
+        }
+      },
+      "positive_group_recall_by_diagnosis": {
+        "AKIEC": {
+          "detected": 39,
+          "lesions": 45,
+          "sensitivity": 0.8666666666666667
+        },
+        "BCC": {
+          "detected": 356,
+          "lesions": 378,
+          "sensitivity": 0.9417989417989417
+        },
+        "MAL_OTH": {
+          "detected": 1,
+          "lesions": 1,
+          "sensitivity": 1.0
+        },
+        "MEL": {
+          "detected": 41,
+          "lesions": 67,
+          "sensitivity": 0.6119402985074627
+        },
+        "SCCKA": {
+          "detected": 69,
+          "lesions": 71,
+          "sensitivity": 0.971830985915493
+        }
+      }
+    },
+    "unambiguous_subset": {
+      "lesions": 670,
+      "positive_lesions": 446,
+      "negative_lesions": 224,
+      "majority_class_accuracy": 0.6656716417910448,
+      "models": {
+        "saved_original": {
+          "accuracy": 0.33432835820895523,
+          "balanced_accuracy": 0.5,
+          "sensitivity": 0.0,
+          "specificity": 1.0,
+          "positive_precision": 0.0,
+          "negative_predictive_value": 0.33432835820895523,
+          "positive_f1": 0.0,
+          "macro_f1": 0.2505592841163311,
+          "roc_auc": 0.6918241511851377,
+          "average_precision": 0.7377136293831297,
+          "confusion": {
+            "true_negative": 224,
+            "false_positive": 0,
+            "false_negative": 446,
+            "true_positive": 0
+          },
+          "accuracy_wilson95": [
+            0.29964096595839995,
+            0.370904683772729
+          ],
+          "sensitivity_wilson95": [
+            0.0,
+            0.008539583769723908
+          ],
+          "specificity_wilson95": [
+            0.9831397725393022,
+            1.0
+          ]
+        },
+        "improved_ensemble": {
+          "accuracy": 0.817910447761194,
+          "balanced_accuracy": 0.8021200352338245,
+          "sensitivity": 0.8497757847533632,
+          "specificity": 0.7544642857142857,
+          "positive_precision": 0.8732718894009217,
+          "negative_predictive_value": 0.7161016949152542,
+          "positive_f1": 0.8613636363636363,
+          "macro_f1": 0.7980731225296442,
+          "roc_auc": 0.8654007847533632,
+          "average_precision": 0.9069725902022365,
+          "confusion": {
+            "true_negative": 169,
+            "false_positive": 55,
+            "false_negative": 67,
+            "true_positive": 379
+          },
+          "accuracy_wilson95": [
+            0.7869034571051137,
+            0.8452927285459633
+          ],
+          "sensitivity_wilson95": [
+            0.8136367923666317,
+            0.8799408979110501
+          ],
+          "specificity_wilson95": [
+            0.6941228307660546,
+            0.806225089186983
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+numpy
+pandas
+scipy
+pillow
+opencv-python-headless
+torch
+torchvision
+wandb
+joblib
+scikit-learn==1.6.1
+matplotlib
+streamlit>=1.66,<2
+altair>=6,<7

@@ -1,0 +1,49 @@
+{
+  "numeric_cols": [
+    "age_approx",
+    "skin_tone_class"
+  ],
+  "categorical_cols": [
+    "sex",
+    "site"
+  ],
+  "numeric_means": {
+    "age_approx": 61.377836722664306,
+    "skin_tone_class": 3.201996476805637
+  },
+  "numeric_stds": {
+    "age_approx": 15.742563508340469,
+    "skin_tone_class": 0.7959195540703049
+  },
+  "category_maps": {
+    "sex": {
+      "female": 0,
+      "male": 1
+    },
+    "site": {
+      "foot": 0,
+      "genital": 1,
+      "hand": 2,
+      "head_neck_face": 3,
+      "lower_extremity": 4,
+      "trunk": 5,
+      "unknown": 6,
+      "upper_extremity": 7
+    }
+  },
+  "feature_names": [
+    "age_approx",
+    "skin_tone_class",
+    "sex=female",
+    "sex=male",
+    "site=foot",
+    "site=genital",
+    "site=hand",
+    "site=head_neck_face",
+    "site=lower_extremity",
+    "site=trunk",
+    "site=unknown",
+    "site=upper_extremity"
+  ],
+  "input_dim": 12
+}

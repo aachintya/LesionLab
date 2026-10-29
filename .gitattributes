@@ -1,0 +1,9 @@
+# Preserve the byte hashes used by baseline and preprocessing integrity checks.
+* -text
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.npz binary
+*.zip binary
+*.joblib binary
