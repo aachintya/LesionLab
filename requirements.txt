@@ -1,13 +1,15 @@
-numpy
-pandas
-scipy
-pillow
-opencv-python-headless
-torch
-torchvision
-wandb
-joblib
+# Python 3.12. Linux uses CPU wheels for Community Cloud.
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.14.1+cpu; sys_platform == 'linux'
+torchvision==0.29.1+cpu; sys_platform == 'linux'
+torch==2.14.1; sys_platform != 'linux'
+torchvision==0.29.1; sys_platform != 'linux'
+streamlit==1.66.1
 scikit-learn==1.6.1
-matplotlib
-streamlit>=1.66,<2
-altair>=6,<7
+numpy==2.3.5
+pandas==2.2.3
+scipy==1.18.1
+pillow==12.3.0
+opencv-python-headless==5.0.0.93
+joblib==1.6.0
+altair==6.3.0

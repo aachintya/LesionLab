@@ -1,13 +1,16 @@
 [server]
-address = "127.0.0.1"
+address = "0.0.0.0"
 headless = true
-maxUploadSize = 1024
+maxUploadSize = 20
+enableXsrfProtection = true
+enableCORS = true
 
 [browser]
 gatherUsageStats = false
 
 [client]
 toolbarMode = "minimal"
+showErrorDetails = "none"
 
 [theme]
 base = "light"

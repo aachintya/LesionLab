@@ -82,3 +82,20 @@ CC BY-NC 4.0 terms in `report/DATA_LICENSE.txt`. Data sources:
 [PAD-UFES-20](https://data.mendeley.com/datasets/zr7vgbcyr2/1).
 Model outputs are for research
 demonstration, not clinical diagnosis.
+
+## Streamlit Community Cloud
+
+Deploy repository `aachintya/LesionLab`, branch `main`, entrypoint **`app.py`** and
+Python **3.12**. This entrypoint uses CPU inference, fixes the improved ensemble,
+and hides model setup. The ordinary local entrypoint remains `streamlit_app.py`.
+
+The five trained binary files under `src/checkpoints/` must also be available in
+the deployed repository: `best_clinical.pt`, `best_dermoscopic.pt`,
+`best_metadata.pt`, `best_fusion_lr.joblib` and `input_validator.pt`.
+They are ignored locally, so publishing them requires an explicit `git add -f`
+for those five filenames. The metadata encoder and downstream ensemble artifacts
+are already tracked. No dataset, HF token or external inference API is required.
+
+The root dependencies are for app inference. Use the Kaggle notebook's runtime
+setup when training, rather than installing CPU deployment requirements there.
+
