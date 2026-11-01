@@ -76,8 +76,7 @@ Required inference files are `best_clinical.pt`, `best_dermoscopic.pt`,
 `best_metadata.pt`, `metadata_encoder.json`, `best_fusion_lr.joblib` and
 `input_validator.pt`, under `src/checkpoints/`. The small downstream ensemble
 artifacts are already included. Their hashes require the matching original
-encoders. Missing validator weights block prediction. The Performance page works from the included evaluation data; analysis uses
-your uploaded photographs. No preselected example cases are bundled.
+encoders. Missing validator weights block prediction. Analysis uses your uploaded photographs. No preselected example cases are bundled.
 
 Training notebooks require the official data and their prepared private reference
 inputs where specified. This source export is not a model or

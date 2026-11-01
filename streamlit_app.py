@@ -387,130 +387,6 @@ def analyze_page():
     render_heatmaps(record if saved_key == request_key else None)
 
 
-def results_page():
-    st.markdown('<div class="eyebrow">MEASURED PERFORMANCE</div>', unsafe_allow_html=True)
-    st.title("Evidence behind the demo.")
-    st.write("One screening policy. A matched comparison. The full diagnostic results.")
-    st.caption("Recorded development evaluation · Validation and historical holdout are reported separately")
-    screening_tab, diagnosis_tab, historical_tab = st.tabs(["Broader screening", "11-class validation", "Historical holdout"])
-    with screening_tab:
-        path = ROOT / "demo/evaluation/screening.json"
-        if not path.is_file():
-            st.info("The recorded screening evaluation is unavailable.")
-        else:
-            evaluation = json.loads(path.read_text())["evaluations"]["risk_screening_all"]
-            models = {name: values["mapped_11class_argmax"] for name, values in evaluation["models"].items()}
-            improved, original = models["improved_ensemble"], models["saved_original"]
-            st.markdown('<span class="hero-note">Demo policy · group the leading diagnosis</span>', unsafe_allow_html=True)
-            a, b, c = st.columns(3)
-            for column, label, key in [(a,"Screening accuracy","accuracy"), (b,"Positive-group sensitivity","sensitivity"), (c,"Specificity","specificity")]:
-                column.metric(label, f"{improved[key]:.2%}", delta=f"{100*(improved[key]-original[key]):+.2f} pp vs original")
-            st.caption("Same 786 validation lesions · 562 malignant / precancerous-family and 224 benign / inflammatory-family cases")
-            st.subheader("Original model versus improved ensemble")
-            rows = [{"Pipeline": label, **{title: values[key] for title,key in [
-                     ("Accuracy","accuracy"),("Balanced accuracy","balanced_accuracy"),
-                     ("Sensitivity","sensitivity"),("Specificity","specificity"),("Macro F1","macro_f1")]}}
-                    for name,label in [("saved_original","Original fusion"),("improved_ensemble","Improved ensemble")]
-                    for values in [models[name]]]
-            st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch", column_config={
-                key: st.column_config.NumberColumn(format="%.3f") for key in rows[0] if key != "Pipeline"})
-            st.caption("Accuracy rises from 80.41% to 82.70%. Specificity improves by 15.18 percentage points; sensitivity decreases by 2.85 points.")
-            counts = improved["confusion"]
-            left, right = st.columns([1.2, 1])
-            with left:
-                st.markdown("**Improved ensemble · decision counts**")
-                st.altair_chart(demo_charts.confusion_chart(counts), width="stretch")
-            with right:
-                st.metric("Positive lesions detected", f"{counts['true_positive']} / 562")
-                st.metric("Positive lesions missed", str(counts["false_negative"]))
-                st.metric("Benign / inflammatory false alarms", str(counts["false_positive"]))
-            st.caption("Melanoma maps to the positive family in 41/67 cases (61.19%); the overall family sensitivity includes the other diagnoses. "
-                       "AKIEC and SCCKA contain precancerous or mixed categories.")
-            with st.expander("Research details · archived score-pooling analysis"):
-                st.write("A separate experiment summed positive-family scores at a fixed 0.50 cutoff. "
-                         "It is preserved for reproducibility and is not the demo's decision policy.")
-                st.caption("Pooled-score accuracy: original 40.97%, ensemble 83.72%. The original scores are uncalibrated; "
-                           "this threshold-specific gap should not be presented as a matched binary-training improvement.")
-                predictions = pd.read_csv(ROOT / "demo/evaluation/screening_predictions.csv")
-                left, right = st.columns(2)
-                with left:
-                    st.markdown("**Continuous group-score ROC**")
-                    st.altair_chart(demo_charts.evaluation_curves(predictions), width="stretch")
-                with right:
-                    st.markdown("**Continuous group-score precision–recall**")
-                    st.altair_chart(demo_charts.evaluation_curves(predictions, precision_recall=True), width="stretch")
-                st.caption("These curves assess continuous summed-score ranking, rather than the demo's category-grouping decisions.")
-    comparison = ROOT / "demo/evaluation/validation_comparison.csv"
-    if comparison.is_file():
-        table = pd.read_csv(comparison)
-        selected = table[table.method.isin(["Saved original fusion", "Feature LR + six-view ensemble"])].copy()
-        ensemble = selected[selected.method == "Feature LR + six-view ensemble"].iloc[0]
-        with diagnosis_tab:
-            a, b, c = st.columns(3)
-            a.metric("Ensemble validation accuracy", f"{ensemble.accuracy:.2%}")
-            b.metric("Validation balanced accuracy", f"{ensemble.balanced_accuracy:.2%}")
-            c.metric("Validation macro F1", f"{ensemble.macro_f1:.4f}")
-            st.caption("Same 786 validation lesions. Broader grouping is a separate endpoint.")
-            st.dataframe(selected[["method", "accuracy", "balanced_accuracy", "macro_f1"]].rename(
-                columns={"method": "Pipeline", "accuracy": "Accuracy", "balanced_accuracy": "Balanced accuracy", "macro_f1": "Macro F1"}),
-                hide_index=True, width="stretch")
-            results = ROOT / "report/validation_results.csv"
-            if results.is_file():
-                st.dataframe(pd.read_csv(results).rename(columns={
-                    "metric": "Metric", "initial_system": "Initial score fusion",
-                    "enhanced_ensemble": "Feature/TTA ensemble"}),
-                    hide_index=True, width="stretch")
-    with historical_tab:
-        render_historical_results()
-
-
-def render_historical_results():
-    st.subheader("Saved original: historical holdout")
-    report = read_report("best_fusion_lr.metrics.json")
-    if report is None:
-        st.info("Import training_artifacts.zip in Model setup to view the recorded evaluation.")
-        return
-    a, b, c = st.columns(3)
-    a.metric("Holdout accuracy", f"{report['accuracy']:.2%}")
-    b.metric("Balanced accuracy", f"{report['balanced_accuracy']:.2%}")
-    c.metric("Macro F1", f"{report['macro_f1']:.4f}")
-    st.caption(f"{report.get('evaluation_lesions', 'Unknown')} lesions · {report.get('evaluation_split', 'holdout')} split · "
-               "Internal evaluation; not an official leaderboard score. Image-only modes have separate performance.")
-    screening_path = ROOT / "demo/evaluation/historical_holdout.json"
-    if screening_path.is_file():
-        screening = json.loads(screening_path.read_text())
-        st.subheader("Historical broader screening · JI-ADF comparison")
-        st.caption("Same 524 archived holdout lesions · Group each existing 11-class prediction · "
-                   "376 malignant / precancerous and 148 benign / inflammatory cases")
-        rows = [{"Pipeline": name, **{key: scores[key] for key in
-                ("accuracy", "balanced_accuracy", "sensitivity", "specificity", "macro_f1")}}
-                for name, scores in screening["models"].items()]
-        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch",
-                     column_config={key: st.column_config.NumberColumn(format="%.3f")
-                                    for key in rows[0] if key != "Pipeline"})
-        st.caption("Our JI-ADF adaptation: 77.86% accuracy; original late fusion: 82.25%. "
-                   "Sensitivity changes from 94.15% to 93.62%, while specificity rises from 36.49% to 53.38%. "
-                   "These are our archived adaptation results, not the paper's published scores. "
-                   "The improved ensemble's validation results use a separate cohort.")
-    rows, histories = [], []
-    for model in ("clinical", "dermoscopic", "metadata"):
-        run = read_report(f"{model}_resume.json")
-        if run:
-            rows.append({"Model": model.title(), "Completed epochs": run["epoch"] + 1,
-                         "Best validation score": run["best_score"], "Complete": run["complete"]})
-            for entry in run.get("history", []):
-                histories.append({"Epoch": entry["epoch"], "Model": model.title(), "Validation F1": entry["val_f1"]})
-    if rows:
-        st.subheader("Training summary")
-        st.dataframe(pd.DataFrame(rows), hide_index=True, width="stretch")
-    if histories:
-        st.subheader("Validation F1 by epoch")
-        chart = pd.DataFrame(histories).pivot(index="Epoch", columns="Model", values="Validation F1")
-        st.line_chart(chart)
-    with st.expander("Evaluation details"):
-        st.json(report)
-
-
 def setup_page():
     if HOSTED:
         st.info("Model management is available only in the local research workspace.")
@@ -569,9 +445,7 @@ def about_page():
              "The models and saved baseline are unchanged; the demo performs no training.")
     st.caption("The positive family includes AKIEC, BCC, MAL_OTH, MEL and SCCKA. It includes precancerous and mixed diagnostic categories. "
                "Individual model scores are uncalibrated; this research demo supports exploration, not diagnosis or treatment decisions.")
-    st.subheader("Evaluation")
-    st.write("The Performance page reports complete, fixed evaluation cohorts. "
-             "Analyze accepts your uploaded research photographs; the repository includes no preselected example gallery.")
+    st.write("Analyze accepts your uploaded research photographs; the repository includes no preselected example gallery.")
     st.subheader("Your session")
     st.write("Uploads are processed on the app server." if HOSTED else "Images are processed on this computer.")
     st.write("Temporary analysis files are removed after each run. Previews, uploaded files and results can remain in your active "
@@ -586,7 +460,7 @@ with st.sidebar:
     st.markdown('<div class="brand">Lesion<span>Lab.</span></div>', unsafe_allow_html=True)
     st.caption("Multimodal skin lesion research")
     st.divider()
-    pages = ["Analyze", "Performance", "About"] + ([] if HOSTED else ["Model setup"])
+    pages = ["Analyze", "About"] + ([] if HOSTED else ["Model setup"])
     if st.session_state.get("workspace_page") not in (None, *pages):
         st.session_state["workspace_page"] = "Analyze"
     page = st.radio("Workspace", pages,
@@ -604,8 +478,6 @@ with st.sidebar:
 
 if page == "Analyze":
     analyze_page()
-elif page == "Performance":
-    results_page()
 elif page == "About":
     about_page()
 else:
