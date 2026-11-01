@@ -450,10 +450,16 @@ def results_page():
             a.metric("Ensemble validation accuracy", f"{ensemble.accuracy:.2%}")
             b.metric("Validation balanced accuracy", f"{ensemble.balanced_accuracy:.2%}")
             c.metric("Validation macro F1", f"{ensemble.macro_f1:.4f}")
-            st.caption("Same 786 validation lesions. Eleven-class scores and evaluation are unchanged; broader grouping is a separate endpoint.")
+            st.caption("Same 786 validation lesions. Broader grouping is a separate endpoint.")
             st.dataframe(selected[["method", "accuracy", "balanced_accuracy", "macro_f1"]].rename(
                 columns={"method": "Pipeline", "accuracy": "Accuracy", "balanced_accuracy": "Balanced accuracy", "macro_f1": "Macro F1"}),
                 hide_index=True, width="stretch")
+            results = ROOT / "report/validation_results.csv"
+            if results.is_file():
+                st.dataframe(pd.read_csv(results).rename(columns={
+                    "metric": "Metric", "initial_system": "Initial score fusion",
+                    "enhanced_ensemble": "Feature/TTA ensemble"}),
+                    hide_index=True, width="stretch")
     with historical_tab:
         render_historical_results()
 

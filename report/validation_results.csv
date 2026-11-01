@@ -1,0 +1,9 @@
+metric,initial_system,enhanced_ensemble
+Macro ROC-AUC,0.8627,0.8767
+Macro average precision,0.456,0.5576
+Mean one-versus-rest class accuracy,0.9267,0.944
+Macro sensitivity,0.4282,0.543
+Macro specificity,0.9569,0.9638
+Mean class Dice / macro F1,0.3551,0.553
+Macro PPV,0.3233,0.6974
+Macro NPV,0.9533,0.9632

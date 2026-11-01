@@ -10,8 +10,8 @@ metadata. The main method is an EfficientNetV2-S frozen-feature/six-view ensembl
 | `src/` | Models, preprocessing, training, inference and fusion code |
 | `notebooks/` | Main training, JI-ADF comparison and binary-study notebooks |
 | `demo/` | Small ensemble artifacts and fixed evaluation data used by Streamlit |
-| `report/LesionLab_Report.pdf` | Final 28-page research report |
-| `report/LaTeX_Source.zip` | Complete portable LaTeX project |
+| `report/LesionLab_Report.pdf` | 33-page research report |
+| `report/LaTeX_Source.zip` | LaTeX source archive |
 | `tests/` | Focused model, inference, screening and protocol tests |
 
 The supplementary binary study is in the report appendix. `src/improved/` contains
@@ -23,17 +23,31 @@ builders, audit dumps, logs, environments and raw datasets are excluded.
 
 The following comparison uses the **same 786 validation lesions**:
 
-| Method | Accuracy | Balanced accuracy | Macro F1 |
-| --- | ---: | ---: | ---: |
-| Original score fusion | 59.67% | 42.82% | 0.3551 |
-| Feature/TTA ensemble | **69.21%** | **45.63%** | **0.4523** |
+| Metric | Initial score fusion | Enhanced feature/TTA ensemble |
+| --- | ---: | ---: |
+| Macro ROC-AUC | 0.8627 | **0.8767** |
+| Macro average precision | 0.4560 | **0.5576** |
+| Mean one-versus-rest class accuracy | 0.9267 | **0.9440** |
+| Macro sensitivity | 0.4282 | **0.5430** |
+| Macro specificity | 0.9569 | **0.9638** |
+| Mean class Dice / macro F1 | 0.3551 | **0.5530** |
+| Macro PPV | 0.3233 | **0.6974** |
+| Macro NPV | 0.9533 | **0.9632** |
 
-The ensemble combines a balanced logistic classifier on frozen image features,
-metadata and specialist scores with six-view clinical/dermoscopic averaging using
-an equal geometric combination. The trained encoders remain unchanged.
-Broader lesion-family screening accuracy is 82.70% versus 80.41% for the original,
-with sensitivity 88.97% and specificity 66.96%. These are exploratory validation
-results, not an independent test or a state-of-the-art claim.
+Overall multiclass accuracy increases from **59.67%** to **69.21%**, with
+75 fewer total errors (317 versus 242). Mean one-versus-rest class accuracy
+includes true negatives and differs from overall multiclass accuracy.
+
+The ensemble combines a balanced logistic classifier on a 173-dimensional frozen
+feature/metadata/specialist-score representation with six-view clinical/dermoscopic
+averaging using equal geometric pooling. The trained encoders remain unchanged.
+The feature classifier fits 3,930 training-plus-fusion lesions, while initial score
+fusion fits 524 fusion lesions; this comparison measures complete pipelines.
+
+Published JI-ADF values use a different, 479-lesion hidden-test cohort. Numerical
+cross-study differences do not establish matched-test superiority. Patient-level
+independence cannot be established, and rare-class validation supports are small.
+Broader screening and direct-binary studies are separate experiments.
 
 The saved original baseline separately obtained 63.55% accuracy and 0.4026 macro F1
 on 524 historical holdout lesions. That cohort is different. The original full baseline archive remains unchanged in the private research
